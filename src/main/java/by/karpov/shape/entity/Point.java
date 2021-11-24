@@ -1,55 +1,63 @@
 package by.karpov.shape.entity;
 
 public class Point {
-    private final Double pivotX;
-    private final Double pivotY;
-    private final Double pivotZ;
+    private final double pivotX;
+    private final double pivotY;
+    private final double pivotZ;
 
-    public Double getPivotX() {
-        return pivotX;
-    }
-
-    public Double getPivotY() {
-        return pivotY;
-    }
-
-    public Double getPivotZ() {
-        return pivotZ;
-    }
-
-    public Point(Double pivotX, Double pivotY, Double pivotZ) {
+    public Point(double pivotX, double pivotY, double pivotZ) {
         this.pivotX = pivotX;
         this.pivotY = pivotY;
         this.pivotZ = pivotZ;
     }
 
-    @Override
-    public String toString() {
-        return "\n Point{" +
-                "pivotX=" + pivotX +
-                ", pivotY=" + pivotY +
-                ", pivotZ=" + pivotZ +
-                '}';
+    public double getPivotX() {
+        return pivotX;
+    }
+
+    public double getPivotY() {
+        return pivotY;
+    }
+
+    public double getPivotZ() {
+        return pivotZ;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null || obj.getClass() != this.getClass()) {
-            return false;
-        }
-        Point point = (Point) obj;
-        return pivotX != null
-                && pivotY != null
-                && pivotZ != null
-                && pivotX.equals(point.pivotX)
-                && pivotY.equals(point.pivotY)
-                && (pivotZ.equals(point.pivotZ));
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Point point = (Point) o;
+
+        if (Double.compare(point.pivotX, pivotX) != 0) return false;
+        if (Double.compare(point.pivotY, pivotY) != 0) return false;
+        return Double.compare(point.pivotZ, pivotZ) == 0;
     }
 
     @Override
     public int hashCode() {
-        int result = 17;
-        result = 31 * result + pivotX.intValue() + pivotY.intValue() + pivotZ.intValue();
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(pivotX);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(pivotY);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(pivotZ);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder stringBuilder = new StringBuilder("\nPoint");
+        stringBuilder.append("{ pivotX=").append(pivotX);
+        stringBuilder.append(" pivotY=").append(pivotY);
+        stringBuilder.append(" pivotZ=").append(pivotZ);
+        stringBuilder.append("}");
+        return stringBuilder.toString();
+    }
+
+
+
 }

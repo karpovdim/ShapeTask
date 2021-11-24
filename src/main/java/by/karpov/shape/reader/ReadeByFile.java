@@ -1,7 +1,6 @@
 package by.karpov.shape.reader;
 
 import by.karpov.shape.exception.PyramidException;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,10 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReadeByFile implements BaseReader {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(ReadeByFile.class);
 
+    @Override
     public List<String> readFile(String path) throws PyramidException {
-        if (path == null || path.isBlank()) {
+        if (path == null || path.isBlank() && path.isEmpty()) {
             throw new PyramidException("File is null or file name/path is empty");
         }
         final List<String> list = new ArrayList<>();
@@ -24,11 +24,12 @@ public class ReadeByFile implements BaseReader {
             while ((line = rdr.readLine()) != null) {
                 list.add(line);
             }
-            logger.log(Level.INFO, "Read file {} is successful", path);
-
+            LOGGER.info("Read file by path {} is successful", path);
+            return list;
         } catch (IOException exception) {
-            throw new PyramidException(String.format("Some problems with reading file of path %s", path), exception);
+            String msg = String.format("Some problems with reading file of path %s.", path);
+            LOGGER.error(msg + " {}", exception.getMessage());
+            throw new PyramidException(msg, exception);
         }
-        return list;
     }
 }
